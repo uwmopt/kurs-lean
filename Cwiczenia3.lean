@@ -1,5 +1,5 @@
 /-
-  ĆWICZENIA 3 — formalizacja „na poważnie" (dla chętnych)
+  ĆWICZENIA 3 – formalizacja „na poważnie" (dla chętnych)
   Kurs: „Wstęp do dowodzenia w Lean 4", Wykład 3
 
   Temat: granice ciągów. Definiujemy pojęcie zbieżności
@@ -100,6 +100,6 @@ theorem zbiegaDo_iff_tendsto (a : ℕ → ℝ) (L : ℝ) :
 
 end
 
-/- KONIEC. Jeśli wszystkie `sorry` zniknęły — brawo!
+/- KONIEC. Jeśli wszystkie `sorry` zniknęły – brawo!
   Następny krok: spróbuj sformułować (samo sformułować!)
   twierdzenie z własnej dziedziny. -/

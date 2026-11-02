@@ -1,5 +1,5 @@
 /-
-  ĆWICZENIA 2 — logika, taktyki, indukcja
+  ĆWICZENIA 2 – logika, taktyki, indukcja
   Kurs: „Wstęp do dowodzenia w Lean 4", Wykład 2
 
   Zasady jak w poprzednim pliku: zastąp wszystkie `sorry`.
@@ -94,7 +94,7 @@ example (P : Prop) (h1 : P) (h2 : ¬ P) : 0 = 1 := by
 end
 
 section
-/-! ## Zadanie 7: indukcja — rozgrzewka
+/-! ## Zadanie 7: indukcja – rozgrzewka
 
 Udowodnij: 0 + n = n dla wszystkich n.
 Wskazówka: `induction n with | zero => ... | succ k ih => ...`.

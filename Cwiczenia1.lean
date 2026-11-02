@@ -1,5 +1,5 @@
 /-
-  ĆWICZENIA 1 — pierwsze kroki w Lean 4
+  ĆWICZENIA 1 – pierwsze kroki w Lean 4
   Kurs: „Wstęp do dowodzenia w Lean 4", Wykład 1
 
   Zasady:
