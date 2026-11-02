@@ -1,157 +1,90 @@
 /-
-  ĆWICZENIA 2 – logika, taktyki, indukcja
-  Kurs: „Wstęp do dowodzenia w Lean 4", Wykład 2
+  ĆWICZENIA 2 – logika, kwantyfikatory, mathlib, indukcja
+  Kurs: „Wstęp do dowodzenia w Lean 4”, spotkanie 2
 
-  Zasady jak w poprzednim pliku: zastąp wszystkie `sorry`.
-  Potrzebne narzędzia: intro, apply, exact, constructor, rcases,
-  left/right, use, by_contra, induction, omega, ring, exact? (wykład 2).
-  Po każdym kroku patrz na InfoView. Nie bój się eksperymentować!
+  Układ jak w Cwiczenia1.lean: (a) przykład rozwiązany,
+  (b) przykład z jedną luką, (c) zadanie samodzielne.
+  Kontrola: ✓✓ na marginesie przy gotowym twierdzeniu.
+  Nowe narzędzia: intro, constructor, obtain, use, exact?, induction.
+  Zadania dla chętnych: plik Cwiczenia2_dodatkowe.lean.
 -/
 
 import Mathlib
 
-section
-/-! ## Zadanie 1: koniunkcja
+/-! ## Część 1: implikacja – `intro` -/
 
-Wskazówka: `constructor` rozbija cel `P ∧ Q`; kropka `·`
-rozpoczyna dowód kolejnego celu.
--/
+-- (a) przykład rozwiązany
+example (P Q R : Prop) (h1 : P → Q) (h2 : Q → R) : P → R := by
+  intro hp
+  exact h2 (h1 hp)
 
-example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := by
+-- (b) jedna luka
+example (P Q : Prop) (hq : Q) : P → Q := by
+  intro hp
   sorry
 
+-- (c) samodzielnie
+example (P Q R : Prop) (h : P → Q → R) (hp : P) (hq : Q) : R := by
+  sorry
+
+/-! ## Część 2: koniunkcja – `constructor`, `obtain` -/
+
+-- (a) przykład rozwiązany
+example (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q := by
+  constructor
+  · exact hp
+  · exact hq
+
+-- (b) jedna luka
 example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
+  obtain ⟨hp, hq⟩ := h
   sorry
 
-end
-
-section
-/-! ## Zadanie 2: alternatywa i analiza przypadków
-
-Wskazówka: `rcases h with h | h` rozpakowuje dowód `∨`.
--/
-
-example (P Q : Prop) (h : P ∨ Q) : Q ∨ P := by
+-- (c) samodzielnie
+example (P Q R : Prop) (h : P ∧ Q) (h2 : Q → R) : P ∧ R := by
   sorry
 
-example (P Q R : Prop) (h : P ∨ Q) (hP : P → R) (hQ : Q → R) : R := by
-  sorry
+/-! ## Część 3: kwantyfikatory – `use`, `obtain` -/
 
-end
+-- (a) przykład rozwiązany
+example : ∃ n : ℕ, n + 2 = 5 := by
+  use 3
 
-section
-/-! ## Zadanie 3: implikacja i `intro`
-
-Wskazówka: `intro` wprowadza przesłankę do kontekstu.
--/
-
-example (P Q R : Prop) (h : P → Q) (h2 : Q → R) : P → R := by
-  sorry
-
-end
-
-section
-/-! ## Zadanie 4: kwantyfikatory
-
-Wskazówka: dowód `∀` zaczyna się od `intro n`;
-   dla celu `∃` użyj `use` albo podaj parę `⟨..., ...⟩`.
--/
-
-example (P : ℕ → Prop) (h : ∀ n, P n) : ∃ m, P m := by
-  sorry
-
+-- (b) jedna luka
 example (P Q : ℕ → Prop) (h : ∀ n, P n → Q n)
-    (hP : ∃ n, P n) : ∃ n, Q n := by
+    (hp : ∃ n, P n) : ∃ n, Q n := by
+  obtain ⟨n, hn⟩ := hp
   sorry
 
-end
-
-section
-/-! ## Zadanie 5: de Morgan
-
-Udowodnij: ¬(P ∨ Q) ↔ ¬P ∧ ¬Q.
-Wskazówka: `constructor` dla `↔`; w prawo przyda się
-`intro h` i `fun hp => h (Or.inl hp)`.
--/
-
-example (P Q : Prop) : ¬(P ∨ Q) ↔ ¬P ∧ ¬Q := by
+-- (c) samodzielnie
+example : ∃ n : ℕ, 2 * n = 10 := by
   sorry
 
-end
+/-! ## Część 4: gotowe twierdzenia – `exact?`
 
-section
-/-! ## Zadanie 6: sprzeczność
+Wpisz `exact?` zamiast `sorry`. W InfoView pojawi się propozycja
+„Try this: …”; kliknij ją, aby wstawić do pliku. -/
 
-Z `False` wynika cokolwiek; `¬P` to `P → False`.
--/
-
-example (P : Prop) (h : False) : P := by
+example (a b : ℕ) (h1 : a ≤ b) (h2 : b ≤ a) : a = b := by
   sorry
 
-example (P : Prop) (h1 : P) (h2 : ¬ P) : 0 = 1 := by
-  sorry
+/-! ## Część 5: indukcja na gotowym schemacie
 
-end
-
-section
-/-! ## Zadanie 7: indukcja – rozgrzewka
-
-Udowodnij: 0 + n = n dla wszystkich n.
-Wskazówka: `induction n with | zero => ... | succ k ih => ...`.
--/
-
-theorem zero_add' (n : ℕ) : 0 + n = n := by
-  sorry
-
-end
-
-section
-/-! ## Zadanie 8: indukcja z arytmetyką
-
-Udowodnij, że suma 0 + 1 + ... + n wynosi n * (n + 1) / 2.
-Aby uniknąć dzielenia, dowodzimy wzoru pomnożonego przez 2.
-Sumę definiujemy rekurencyjnie.
-
-Wskazówka: `induction n with | zero => ... | succ k ih => ...`.
-Przypadek zero: `rfl` (albo `simp [suma]`).
-Krok: `simp only [suma]` rozwija suma (k + 1) do suma k + (k + 1);
-potem `rw [mul_add, ih]`, a na końcu `ring`.
--/
+Suma 0 + 1 + ... + n wynosi n(n + 1)/2. Aby uniknąć dzielenia,
+dowodzimy wzoru pomnożonego przez 2. Sumę definiujemy rekurencyjnie. -/
 
 def suma : ℕ → ℕ
   | 0 => 0
   | (n + 1) => suma n + (n + 1)
 
+-- Brakuje jednej linii: jednej taktyki ze slajdu „Arytmetyka automatyczna”.
+-- Obejrzyj cel w InfoView przed tą linią.
 theorem suma_wzor (n : ℕ) : 2 * suma n = n * (n + 1) := by
-  sorry
+  induction n with
+  | zero => rfl
+  | succ k ih =>
+    simp only [suma]     -- rozwija suma (k + 1) do suma k + (k + 1)
+    rw [mul_add, ih]     -- używa założenia indukcyjnego ih
+    sorry
 
-end
-
-section
-/-! ## Zadanie 9: niestandardowa kolejność
-
-Udowodnij: jeśli dla wszystkich n zachodzi P n, to P (k + 3).
-Wskazówka: zadanie na dokładne czytanie celu.
--/
-
-example (P : ℕ → Prop) (h : ∀ n, P n) (k : ℕ) : P (k + 3) := by
-  sorry
-
-end
-
-section
-/-! ## Zadanie 10 (gwiazdka): poszukaj w mathlib
-
-Nie dowodź ręcznie tego, co ma mathlib.
-Umieść kursor na końcu linii (przed `sorry`) i użyj `exact?`.
-Potem zastąp `sorry` znalezionym lematem.
-
-Cel: a ≤ b, b ≤ a ⊢ a = b.
--/
-
-example (a b : ℕ) (h1 : a ≤ b) (h2 : b ≤ a) : a = b := by
-  sorry
-
-end
-
-/- KONIEC. Powodzenia! Kontrola: panel Problems bez ostrzeżeń o `sorry`. -/
+/- KONIEC części podstawowej. -/

@@ -1,99 +1,90 @@
 /-
-  ĆWICZENIA 1 – pierwsze kroki w Lean 4
-  Kurs: „Wstęp do dowodzenia w Lean 4", Wykład 1
+  ĆWICZENIA 1 – pierwsze dowody
+  Kurs: „Wstęp do dowodzenia w Lean 4”, spotkanie 1
 
-  Zasady:
-  * Zastąp każde `sorry` rzeczywistym dowodem.
-  * Plik jest w katalogu projektu kursu; otwieraj w VS Code cały
-    katalog projektu (File → Open Folder), nie pojedynczy plik.
-  * Kontrola: brak czerwonych podkreśleń, a w panelu Problems
-    (Ctrl+Shift+M) brak ostrzeżeń "declaration uses 'sorry'".
-    (W terminalu, w katalogu projektu: lake env lean Cwiczenia1.lean)
-  * Potrzebne narzędzia: rfl, exact, Eq.symm, Eq.trans, rw, calc,
-    omega (wykład 1).
+  Każda część ma trzy kroki:
+    (a) przykład rozwiązany – przeczytaj go i obejrzyj stan w InfoView,
+    (b) przykład z jedną luką – zastąp `sorry` jedną linią,
+    (c) zadanie samodzielne.
+
+  Kontrola: przy gotowym twierdzeniu na marginesie pojawia się znak ✓✓.
+  Żółte ostrzeżenie „declaration uses 'sorry'” oznacza, że dowód
+  nie jest jeszcze gotowy.
+  Otwieraj w VS Code cały folder projektu (File → Open Folder).
+  Zadania dla chętnych: plik Cwiczenia1_dodatkowe.lean.
 -/
 
 import Mathlib
 
-/- Wskazówka: każde `sorry` można podejrzeć w InfoView, stawiając
-   kursor na końcu linii. Cel i dostępne hipotezy zobaczysz na dole
-   ekranu. -/
+/-! ## Część 1: `rfl` – obie strony po obliczeniu są równe -/
 
+-- (a) przykład rozwiązany
+example : 3 + 4 = 7 := by
+  rfl
 
-section
-/-! ## Zadanie 1: refleksyjność
-
-Wskazówka: `rfl` dowodzi celów, których obie strony są
-definicyjnie równe.
--/
-
-example : 2 + 2 = 4 := by
+-- (b) jedna luka
+example : 2 * 5 = 10 := by
   sorry
 
+-- (c) samodzielnie
 example (n : ℕ) : n + 0 = n := by
   sorry
 
-end
+/-! ## Część 2: `exact` – użycie założenia -/
 
-section
-/-! ## Zadanie 2: symetria równości
+-- (a) przykład rozwiązany
+example (a b : ℕ) (h1 : a = b) (h2 : b = 5) : a = 5 := by
+  exact Eq.trans h1 h2
 
-Wskazówka: `Eq.symm` zamienia `a = b` na `b = a`.
--/
-
-example (a b : ℕ) (h : a = b) : b = a := by
+-- (b) jedna luka (wskazówka: Eq.symm)
+example (a b : ℕ) (h1 : a = b) : b = a := by
   sorry
 
-end
-
-section
-/-! ## Zadanie 3: przechodniość równości
-
-Wskazówka: `Eq.trans h₁ h₂` składa `a = b` z `b = c`.
--/
-
-example (a b c : ℕ) (h₁ : a = b) (h₂ : b = c) : a = c := by
+-- (c) samodzielnie (wskazówka: Eq.trans i Eq.symm razem)
+example (a b c : ℕ) (h1 : a = b) (h2 : c = b) : a = c := by
   sorry
 
-end
+/-! ## Część 3: `rw` – przepisanie równości -/
 
-section
-/-! ## Zadanie 4: przekazywanie równości
+-- (a) przykład rozwiązany
+example (f : ℕ → ℕ) (a b : ℕ) (h1 : a = b) : f a = f b := by
+  rw [h1]
 
-Cel „f a = f b" przy założeniu „a = b".
-Wskazówka: po `rw [h]` cel stanie się `f b = f b`.
--/
-
-example (f : ℕ → ℕ) (a b : ℕ) (h : a = b) : f a = f b := by
+-- (b) jedna luka
+example (a b : ℕ) (h1 : a = b) : a + 1 = b + 1 := by
   sorry
 
-end
+-- (c) samodzielnie (obserwuj cel po każdym kroku przepisania)
+example (f : ℕ → ℕ) (a b c : ℕ) (h1 : a = b) (h2 : b = c) : f a = f c := by
+  sorry
 
-section
-/-! ## Zadanie 5: łańcuch równości z `calc`
+/-! ## Część 4: `calc` – łańcuch równości -/
 
-Udowodnij: jeśli a = b, b = c oraz f c = d, to f a = d.
-Wskazówka: użyj `calc` albo trzech kroków `rw`.
--/
+-- (a) przykład rozwiązany
+example (a b c : ℕ) (h1 : a = b) (h2 : b = c) : a = c := by
+  calc a = b := h1
+    _ = c := h2
 
+-- (b) jedna luka: uzupełnij środkowy krok
 example (f : ℕ → ℕ) (a b c d : ℕ)
     (h1 : a = b) (h2 : b = c) (h3 : f c = d) : f a = d := by
+  calc f a = f b := by rw [h1]
+    _ = f c := by sorry
+    _ = d := h3
+
+-- (c) samodzielnie: łańcuch z trzech kroków
+example (a b c d : ℕ) (h1 : a = b) (h2 : b = c) (h3 : c = d) : a = d := by
   sorry
 
-end
+/-! ## Część 5: `omega` – arytmetyka liniowa na liczbach naturalnych -/
 
-section
-/-! ## Zadanie 6 (gwiazdka): arytmetyka
+-- (a) przykład rozwiązany
+example (n : ℕ) (h : n + 3 = 7) : n = 4 := by
+  omega
 
-Niech `omega` będzie Twoim przyjacielem w liniowej arytmetyce.
--/
-
-example (a b : ℕ) (h : a + b = 10) : b + a = 10 := by
+-- (c) samodzielnie
+example (a : ℕ) (h : 2 * a = 6) : a = 3 := by
   sorry
 
-example (a b : ℕ) (h : 2 * a = 6) : a = 3 := by
-  sorry
-
-end
-
-/- KONIEC. Kontrola: panel Problems bez ostrzeżeń o `sorry`. -/
+/- KONIEC części podstawowej. Gdy wszystkie twierdzenia mają ✓✓,
+   można przejść do pliku Cwiczenia1_dodatkowe.lean. -/

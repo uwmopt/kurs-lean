@@ -7,9 +7,12 @@ Wydział Matematyki i Informatyki UWM w Olsztynie. Prowadzący: Ivan Matychyn.
 | Plik | Opis |
 |---|---|
 | `Test.lean` | test środowiska (powinno pojawić się „No goals”) |
-| `Cwiczenia1.lean` | ćwiczenia do spotkania 1: pierwsze dowody |
-| `Cwiczenia2.lean` | ćwiczenia do spotkania 2: logika, taktyki, indukcja |
-| `Cwiczenia3.lean` | ćwiczenia do spotkania 3 (dla chętnych): granice ciągów |
+| `Cwiczenia1.lean` | spotkanie 1: pierwsze dowody (część podstawowa) |
+| `Cwiczenia2.lean` | spotkanie 2: logika, kwantyfikatory, mathlib, indukcja |
+| `Cwiczenia3.lean` | spotkanie 3: wspólny projekt (trzy tematy do wyboru) |
+| `Cwiczenia*_dodatkowe.lean` | zadania dla chętnych |
+
+Każdy plik ćwiczeń ma ten sam układ: przykład rozwiązany, przykład z jedną luką, zadanie samodzielne.
 
 ## Jak pobrać projekt
 
@@ -39,4 +42,4 @@ Otwórz `Test.lean` i postaw kursor na końcu ostatniej linii. W panelu InfoView
 
 - Otwieraj w VS Code **cały folder** projektu, nie pojedynczy plik.
 - **Nie uruchamiaj `lake update`.** To zmienia wersję biblioteki mathlib, a wszyscy uczestnicy mają mieć tę samą.
-- Rozwiązanie ćwiczenia jest gotowe, gdy w panelu *Problems* (`Ctrl+Shift+M`) nie ma błędów ani ostrzeżeń o `sorry`.
+- Twierdzenie jest udowodnione, gdy na marginesie jest znak ✓✓, nie ma czerwonych podkreśleń i nie ma ostrzeżenia o `sorry`.
